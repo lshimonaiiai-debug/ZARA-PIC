@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZARA Outfits Archive | מאגר אאוטפיטים</title>
+    <style>
+        /* איפוס ועיצוב כללי בסגנון מינימליסטי */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #fdfdfd;
+            color: #000;
+        }
+
+        /* שורת ניווט */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 4%;
+            border-bottom: 1px solid #eaeaea;
+            background-color: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: #000;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #555;
+            margin-right: 20px;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #000;
+        }
+
+        /* אזור ראשי (Hero) */
+        .hero {
+            height: 60vh;
+            background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1600&auto=format&fit=crop') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 300;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 25px;
+            max-width: 600px;
+        }
+
+        .hero .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #fff;
+            color: #000;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .hero .btn:hover {
+            background-color: #000;
+            color: #fff;
+        }
+
+        /* אזור הגלריה */
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 400;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #000;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        /* גריד של כרטיסיות */
+        .outfit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        /* כרטיסיית אאוטפיט */
+        .outfit-card {
+            background-color: #fff;
+            border: 1px solid #eee;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            transition: transform 0.3s;
+        }
+
+        .outfit-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .image-container {
+            position: relative;
+            width: 100%;
+            padding-top: 135%; /* יחס גובה-רוחב של צילומי אופנה (3:4 בערך) */
+            overflow: hidden;
+        }
+
+        .image-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* שכבת מידע במעבר עכבר (Hover) */
+        .outfit-overlay {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            color: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .outfit-card:hover .outfit-overlay {
+            opacity: 1;
+        }
+
+        .outfit-overlay h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .outfit-overlay ul {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .outfit-overlay ul li {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        .outfit-overlay ul li::before {
+            content: "• ";
+            color: #888;
+        }
+
+        .view-details {
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: bold;
+            color: #000;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        /* חלק תחתון - פוטר */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: #f9f9f9;
+            border-top: 1px solid #eaeaea;
+            font-size: 12px;
+            color: #888;
+            letter-spacing: 1px;
+        }
+
+        /* התאמה לטלפונים ניידים */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .hero h1 {
+                font-size: 32px;
+            }
+            .outfit-grid {
+                grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="logo">ZARA OUTFITS</a>
+        <nav>
+            <a href="#">נשים</a>
+            <a href="#">גברים</a>
+            <a href="#">ילדים</a>
+            <a href="#">המלצות שילובים</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>השראה יומיומית מבית ZARA</h1>
+        <p>מאגר האאוטפיטים הגדול של חובבי המותג. גלו שילובים, פריטים טרנדיים ואיך אנשים אמיתיים לובשים את הקולקציה האחרונה.</p>
+        <a href="#gallery" class="btn">לכל הלוקים</a>
+    </section>
+
+    <main class="container" id="gallery">
+        <h2 class="section-title">לוקים מובילים מהקהילה</h2>
+        
+        <div class="outfit-grid">
+            
+            <div class="outfit-card">
+                <div class="image-container">
+                    <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=500&auto=format&fit=crop" alt="Outfit 1">
+                    <div class="outfit-overlay">
+                        <h3>סטריט סטייל קלאסי</h3>
+                        <ul>
+                            <li>ג'קט בלייזר מחויט אוברסייז</li>
+                            <li>ג'ינס רחב דגם Marine</li>
+                            <li>גופיית קרופ לבנה בייסיק</li>
+                            <li>תיק צד שחור מרופד</li>
+                        </ul>
+                        <span class="view-details">צפייה בפריטים באתר ZARA ←</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="outfit-card">
+                <div class="image-container">
+                    <img src="https://images.unsplash.com/photo-1485968579580-b6d095142e6e?q=80&w=500&auto=format&fit=crop" alt="Outfit 2">
+                    <div class="outfit-overlay">
+                        <h3>לוק ערב אלגנטי</h3>
+                        <ul>
+                            <li>שמלת סאטן שחורה ארוכה</li>
+                            <li>סנדלי עקב עם רצועות דקות</li>
+                            <li>עגילי גיאומטריים מוזהבים</li>
+                        </ul>
+                        <span class="view-details">צפייה בפריטים באתר ZARA ←</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="outfit-card">
+                <div class="image-container">
+                    <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=500&auto=format&fit=crop" alt="Outfit 3">
+                    <div class="outfit-overlay">
+                        <h3>קז'ואל חורפי מונוכרומטי</h3>
+                        <ul>
+                            <li>סוודר גולף מצמר בצבע שמנת</li>
+                            <li>מכנסיים מחויטים בצבע בז'</li>
+                            <li>מעיל טרנץ' ארוך תואם</li>
+                        </ul>
+                        <span class="view-details">צפייה בפריטים באתר ZARA ←</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="outfit-card">
+                <div class="image-container">
+                    <img src="https://images.unsplash.com/photo-1554412933-514a83d2f3c8?q=80&w=500&auto=format&fit=crop" alt="Outfit 4">
+                    <div class="outfit-overlay">
+                        <h3>לוק אורבני קיצי</h3>
+                        <ul>
+                            <li>חולצת פשתן מכופתרת לבנה</li>
+                            <li>מכנסיים קצרים בגזרה גבוהה</li>
+                            <li>משקפי שמש חתוליות</li>
+                            <li>כפכפי עור שטוחים</li>
+                        </ul>
+                        <span class="view-details">צפייה בפריטים באתר ZARA ←</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 ZARA OUTFITS ARCHIVE | האתר הינו מאגר השראה עצמאי ואינו קשור רשמית לחברת ZARA</p>
+    </footer>
+
+</body>
+</html>
